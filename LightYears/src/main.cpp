@@ -1,6 +1,11 @@
 ﻿#include <iostream>
 
+#include "framework/Application.h"
+
 int main()
 {
-    std::cout<<"Hello World!"<< '\n';    
+    // allocating on heap 
+    std::unique_ptr<ly::Application> app{new ly::Application()};
+    app->Run();
+    std::cout << "Hello Worlds!" << '\n';
 }
