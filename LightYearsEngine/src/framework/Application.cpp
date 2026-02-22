@@ -1,5 +1,4 @@
-﻿#include <iostream>
-
+﻿#include "framework/Core.h"
 #include "framework/Application.h"
 
 namespace ly
@@ -31,6 +30,8 @@ namespace ly
                 TickInternal(target_delta_time);
                 RenderInternal();
             }
+
+            LY_LOG("Ticking at %.2f FPS", 1.f / frame_delta_time);
         }
     }
 

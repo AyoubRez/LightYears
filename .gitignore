@@ -1,2 +1,5 @@
 build/
+build/_deps/
 .idea/
+
+/_deps/
