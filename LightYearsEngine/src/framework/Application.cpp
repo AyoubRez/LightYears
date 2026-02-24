@@ -4,27 +4,28 @@
 
 namespace ly
 {
-    Application::Application()
-        : m_window({sf::VideoMode({1024, 1440}), "Light Years"}),
-          m_target_frame_rate(60.f),
-          m_tick_clock(),
-          currentWorld(nullptr)
+    Application::Application(
+        unsigned int windowWidth, unsigned int windowHeight, const std::string& windowTitle, std::uint32_t style)
+        : m_Window({sf::VideoMode({windowWidth, windowHeight}), windowTitle, style}),
+          m_TargetFrameRate(60.f),
+          m_TickClock(),
+          m_CurrentWorld(nullptr)
     {
     }
 
     void Application::Run()
     {
-        m_tick_clock.restart();
+        m_TickClock.restart();
         float elapsed_time = 0.f;
-        float target_delta_time = 1.f / m_target_frame_rate;
-        while (m_window.isOpen())
+        float target_delta_time = 1.f / m_TargetFrameRate;
+        while (m_Window.isOpen())
         {
-            while (const std::optional event = m_window.pollEvent())
+            while (const std::optional event = m_Window.pollEvent())
             {
                 if (event->is<sf::Event::Closed>())
-                    m_window.close();
+                    m_Window.close();
             }
-            float frame_delta_time = m_tick_clock.restart().asSeconds();
+            float frame_delta_time = m_TickClock.restart().asSeconds();
             elapsed_time += frame_delta_time;
             while (elapsed_time > target_delta_time)
             {
@@ -38,9 +39,9 @@ namespace ly
     void Application::TickInternal(float delta_time)
     {
         Tick(delta_time);
-        if (currentWorld)
+        if (m_CurrentWorld)
         {
-            currentWorld->TickInternal(delta_time);
+            m_CurrentWorld->TickInternal(delta_time);
         }
     }
 
@@ -50,9 +51,9 @@ namespace ly
 
     void Application::RenderInternal()
     {
-        m_window.clear();
+        m_Window.clear();
         Render();
-        m_window.display();
+        m_Window.display();
     }
 
     void Application::Render()
@@ -60,7 +61,7 @@ namespace ly
         sf::CircleShape shape(50.f);
         shape.setFillColor(sf::Color::Green);
         shape.setOrigin({50.f, 50.f});
-        shape.setPosition({m_window.getSize().x / 2.f, m_window.getSize().y / 2.f});
-        m_window.draw(shape);
+        shape.setPosition({m_Window.getSize().x / 2.f, m_Window.getSize().y / 2.f});
+        m_Window.draw(shape);
     }
 }

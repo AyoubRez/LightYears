@@ -8,8 +8,8 @@ namespace ly
     World::World(Application* owningApp)
         : m_OwningApp(owningApp),
           m_BeganPlay(false),
-          m_actors{},
-          m_pending_actors{}
+          m_Actors{},
+          m_PendingActors{}
     {
     }
 
@@ -24,15 +24,24 @@ namespace ly
 
     void World::TickInternal(float delta_time)
     {
-        for (TSharedPtr<Actor>& actor : m_pending_actors)
+        for (TSharedPtr<Actor>& actor : m_PendingActors)
         {
-            m_actors.push_back(actor);
+            m_Actors.push_back(actor);
             actor->BeginPlayInternal();
         }
-        m_pending_actors.clear();
-        for (TSharedPtr<Actor> actor : m_actors)
+        m_PendingActors.clear();
+        
+        for (auto iter = m_Actors.begin(); iter != m_Actors.end();)
         {
-            actor->Tick(delta_time);
+            if (iter->get()->IsPendingDestroy())
+            {
+                iter = m_Actors.erase(iter);
+            }
+            else
+            {
+                iter->get()->Tick(delta_time);
+                ++iter;
+            }
         }
         Tick(delta_time);
     }

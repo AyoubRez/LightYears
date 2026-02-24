@@ -10,7 +10,7 @@ namespace ly
     class Application
     {
     public:
-        Application();
+        Application(unsigned int windowWidth, unsigned int windowHeight, const std::string& windowTitle, std::uint32_t style);
         void Run();
 
         template <typename WorldType>
@@ -21,19 +21,19 @@ namespace ly
         virtual void Tick(float delta_time);
         void RenderInternal();
         virtual void Render();
-        sf::RenderWindow m_window;
-        float m_target_frame_rate;
-        sf::Clock m_tick_clock;
+        sf::RenderWindow m_Window;
+        float m_TargetFrameRate;
+        sf::Clock m_TickClock;
 
-        TSharedPtr<World> currentWorld;
+        TSharedPtr<World> m_CurrentWorld;
     };
 
     template <typename WorldType>
     TWeakPtr<WorldType> Application::LoadWorld()
     {
         TSharedPtr<WorldType> newWorld{new WorldType(this)};
-        currentWorld = newWorld;
-        currentWorld->BeginPlayInternal();
+        m_CurrentWorld = newWorld;
+        m_CurrentWorld->BeginPlayInternal();
         return newWorld;
     }
 }

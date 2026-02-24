@@ -26,15 +26,15 @@ namespace ly
         Application* m_OwningApp;
         bool m_BeganPlay;
         
-        TArray<TSharedPtr<Actor>> m_actors;
-        TArray<TSharedPtr<Actor>> m_pending_actors;
+        TArray<TSharedPtr<Actor>> m_Actors;
+        TArray<TSharedPtr<Actor>> m_PendingActors;
     };
 
     template <typename ActorType>
     TWeakPtr<ActorType> World::SpawnActor()
     {
         TSharedPtr<ActorType> newActor{new ActorType(this)};
-        m_pending_actors.push_back(newActor);
+        m_PendingActors.push_back(newActor);
         return newActor;       
     }
 }
