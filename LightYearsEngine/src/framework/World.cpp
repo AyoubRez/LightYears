@@ -30,7 +30,7 @@ namespace ly
             actor->BeginPlayInternal();
         }
         m_PendingActors.clear();
-        
+
         for (auto iter = m_Actors.begin(); iter != m_Actors.end();)
         {
             if (iter->get()->IsPendingDestroy())
@@ -39,7 +39,7 @@ namespace ly
             }
             else
             {
-                iter->get()->Tick(delta_time);
+                iter->get()->TickInternal(delta_time);
                 ++iter;
             }
         }
@@ -50,13 +50,24 @@ namespace ly
     {
     }
 
+    void World::Render(sf::RenderWindow& window)
+    {
+        for (auto& actor : m_Actors)
+        {
+            actor->Render(window);
+        }
+    }
+
+    sf::Vector2u World::GetWindowSize() const
+    {
+        return m_OwningApp->GetWindowSize();
+    }
+
     void World::Tick(float delta_time)
     {
-        LY_LOG("Tick at frame rate %f", 1.f / delta_time);
     }
 
     void World::BeginPlay()
     {
-        LY_LOG("World began play");
     }
 }

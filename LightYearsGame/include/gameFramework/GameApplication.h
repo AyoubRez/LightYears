@@ -4,8 +4,10 @@
 #include <framework/Application.h>
 #include <framework/Core.h>
 
+
 namespace ly
 {
+    class PlayerSpaceship;
     class Actor;
     class GameApplication : public Application
     {
@@ -15,6 +17,6 @@ namespace ly
         
     private:
         float counter = 0;
-        TWeakPtr<Actor> actorToDestroy;
+        TWeakPtr<PlayerSpaceship> testPlayerSpaceship;
     };
 }

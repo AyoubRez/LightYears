@@ -1,5 +1,6 @@
 ﻿#include "framework/Core.h"
 #include "framework/Application.h"
+#include "framework/AssetManager.h"
 #include "framework/World.h"
 
 namespace ly
@@ -9,7 +10,9 @@ namespace ly
         : m_Window({sf::VideoMode({windowWidth, windowHeight}), windowTitle, style}),
           m_TargetFrameRate(60.f),
           m_TickClock(),
-          m_CurrentWorld(nullptr)
+          m_CurrentWorld(nullptr),
+          m_CleanCycleClock(),
+          m_CleanCycleInterval(10.f)
     {
     }
 
@@ -36,12 +39,22 @@ namespace ly
         }
     }
 
+    sf::Vector2u Application::GetWindowSize() const
+    {
+        return m_Window.getSize();
+    }
+
     void Application::TickInternal(float delta_time)
     {
         Tick(delta_time);
         if (m_CurrentWorld)
         {
             m_CurrentWorld->TickInternal(delta_time);
+        }
+        if (m_CleanCycleClock.getElapsedTime().asSeconds() >= m_CleanCycleInterval)
+        {
+            m_CleanCycleClock.restart();
+            AssetManager::Get().CleanCycle();
         }
     }
 
@@ -58,10 +71,9 @@ namespace ly
 
     void Application::Render()
     {
-        sf::CircleShape shape(50.f);
-        shape.setFillColor(sf::Color::Green);
-        shape.setOrigin({50.f, 50.f});
-        shape.setPosition({m_Window.getSize().x / 2.f, m_Window.getSize().y / 2.f});
-        m_Window.draw(shape);
+        if (m_CurrentWorld)
+        {
+            m_CurrentWorld->Render(m_Window);
+        }
     }
 }

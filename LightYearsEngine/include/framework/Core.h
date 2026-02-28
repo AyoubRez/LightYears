@@ -5,6 +5,7 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
+#include <optional>
 
 namespace ly
 {
@@ -20,9 +21,12 @@ namespace ly
     template <typename T>
     using TArray = std::vector<T>;
 
+    template <typename T>
+    using TOptional = std::optional<T>;
+
     template <typename keyType, typename valType, typename Pr=std::less<keyType>>
     using TMap = std::map<keyType, valType, Pr>;
-    
+
     template <typename keyType, typename valType, typename Hasher=std::hash<keyType>>
     using TDictionary = std::unordered_map<keyType, valType, Hasher>;
 

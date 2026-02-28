@@ -10,11 +10,13 @@ namespace ly
     class Application
     {
     public:
-        Application(unsigned int windowWidth, unsigned int windowHeight, const std::string& windowTitle, std::uint32_t style);
+        Application(unsigned int windowWidth, unsigned int windowHeight, const std::string& windowTitle,
+                    std::uint32_t style);
         void Run();
 
         template <typename WorldType>
         TWeakPtr<WorldType> LoadWorld();
+        sf::Vector2u GetWindowSize() const;
 
     private:
         void TickInternal(float delta_time);
@@ -26,6 +28,8 @@ namespace ly
         sf::Clock m_TickClock;
 
         TSharedPtr<World> m_CurrentWorld;
+        sf::Clock m_CleanCycleClock;
+        float m_CleanCycleInterval;
     };
 
     template <typename WorldType>

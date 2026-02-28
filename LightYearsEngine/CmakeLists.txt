@@ -14,6 +14,12 @@
     ${CMAKE_CURRENT_SOURCE_DIR}/include/framework/Object.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/framework/Object.cpp
     
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/framework/AssetManager.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/framework/AssetManager.cpp
+    
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/framework/MathLibrary.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/framework/MathLibrary.cpp
+    
     ${CMAKE_CURRENT_SOURCE_DIR}/include/EntryPoint.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/EntryPoint.cpp
 )
