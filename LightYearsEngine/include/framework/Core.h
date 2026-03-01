@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <vector>
 #include <optional>
+#include <unordered_set>
 
 namespace ly
 {
@@ -29,6 +30,9 @@ namespace ly
 
     template <typename keyType, typename valType, typename Hasher=std::hash<keyType>>
     using TDictionary = std::unordered_map<keyType, valType, Hasher>;
+
+    template <typename T>
+    using TSet = std::unordered_set<T>;
 
 #define LY_LOG(M, ...) printf(M "\n", ##__VA_ARGS__)
 }

@@ -17,6 +17,7 @@ namespace ly
     void Spaceship::BeginPlay()
     {
         Actor::BeginPlay();
+        SetEnablePhysics(true);
     }
 
     void Spaceship::SetVelocity(const sf::Vector2f& velocity)

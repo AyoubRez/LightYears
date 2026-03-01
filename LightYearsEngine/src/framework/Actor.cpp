@@ -1,7 +1,10 @@
 ﻿#include "framework/Actor.h"
+
+#include "box2d/box2d.h"
 #include "framework/Core.h"
 #include "framework/AssetManager.h"
 #include "framework/MathLibrary.h"
+#include "framework/PhysicsSystem.h"
 #include "framework/World.h"
 
 namespace ly
@@ -71,12 +74,14 @@ namespace ly
     {
         if (!m_Sprite.has_value()) return;
         m_Sprite->setPosition(newLocation);
+        UpdatePhysicsBodyTransform();
     }
 
     void Actor::SetActorRotation(const sf::Angle& newRotation)
     {
         if (!m_Sprite.has_value()) return;
         m_Sprite->setRotation(newRotation);
+        UpdatePhysicsBodyTransform();
     }
 
     void Actor::AddActorLocationOffset(const sf::Vector2f& offsetAmount)
@@ -136,6 +141,64 @@ namespace ly
             return true;
         }
         return false;
+    }
+
+    void Actor::SetEnablePhysics(bool enablePhysics)
+    {
+        m_physicsEnabled = enablePhysics;
+        if (m_physicsEnabled)
+        {
+            InitializePhysics();
+        }
+        else
+        {
+            UnInitializePhysics();
+        }
+    }
+
+    void Actor::OnActorBeginOverlap(Actor* otherActor)
+    {
+        LY_LOG("OnActorBeginOverlap");
+    }
+
+    void Actor::OnActorEndOverlap(Actor* otherActor)
+    {
+        LY_LOG("OnActorEndOverlap");
+    }
+
+    void Actor::Destroy()
+    {
+        UnInitializePhysics();
+        Object::Destroy();
+    }
+
+    void Actor::InitializePhysics()
+    {
+        m_physicsBodyId = PhysicsSystem::Get().AddListener(this);
+    }
+
+    void Actor::UnInitializePhysics()
+    {
+        if (b2Body_IsValid(m_physicsBodyId))
+        {
+            PhysicsSystem::Get().RemoveListener(m_physicsBodyId);
+        }
+        m_physicsBodyId = b2_nullBodyId;
+    }
+
+    void Actor::UpdatePhysicsBodyTransform()
+    {
+        if (b2Body_IsValid(m_physicsBodyId))
+        {
+            float physicsScale = PhysicsSystem::Get().GetPhysicsScale();
+            b2Vec2 pos{
+                GetActorLocation().x * physicsScale,
+                GetActorLocation().y * physicsScale
+            };
+            b2Rot rotation = b2MakeRot(GetActorRotation().asRadians());
+
+            b2Body_SetTransform(m_physicsBodyId, pos, rotation);
+        }
     }
 
     void Actor::CenterPivot()

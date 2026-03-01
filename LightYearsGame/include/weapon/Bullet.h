@@ -13,6 +13,7 @@ namespace ly
         void SetDamage(float damage);
         
         void Tick(float delta_time) override;
+        void BeginPlay() override;
        
 
     private:

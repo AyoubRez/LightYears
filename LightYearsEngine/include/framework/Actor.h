@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "box2d/id.h"
 #include "framework/Object.h"
 #include "SFML/Graphics/Sprite.hpp"
 #include "framework/Core.h"
@@ -39,13 +40,24 @@ namespace ly
         World* GetWorld() const { return m_OwningWorld; }
 
         bool IsActorOuOfWindowBounds() const;
+        
+        void SetEnablePhysics(bool enablePhysics);
+        virtual void OnActorBeginOverlap(Actor* otherActor);
+        virtual void OnActorEndOverlap(Actor* otherActor);
+        void Destroy() override;
 
     private:
+        void InitializePhysics();
+        void UnInitializePhysics();
+        void UpdatePhysicsBodyTransform();
+        
         void CenterPivot();
         World* m_OwningWorld;
         bool m_BeganPlay;
+        b2BodyId m_physicsBodyId;
 
         TOptional<sf::Sprite> m_Sprite;
         TSharedPtr<sf::Texture> m_Texture;
+        bool m_physicsEnabled;
     };
 }
