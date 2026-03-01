@@ -116,6 +116,28 @@ namespace ly
         return m_OwningWorld->GetWindowSize();
     }
 
+    sf::FloatRect Actor::GetActorGlobalBounds() const
+    {
+        return m_Sprite->getGlobalBounds();
+    }
+
+    bool Actor::IsActorOuOfWindowBounds() const
+    {
+        float windowWidth = GetWindowSize().x;
+        float windowHeight = GetWindowSize().y;
+        float width = GetActorGlobalBounds().size.x;
+        float height = GetActorGlobalBounds().size.y;
+        sf::Vector2f actorPos = GetActorLocation();
+        if (actorPos.x < -width
+            || actorPos.x > windowWidth + width
+            || actorPos.y < -height
+            || actorPos.y > windowHeight + height)
+        {
+            return true;
+        }
+        return false;
+    }
+
     void Actor::CenterPivot()
     {
         if (!m_Sprite.has_value()) return;

@@ -26,7 +26,7 @@ namespace ly
     sf::Vector2<T>& NormalizeVector(sf::Vector2<T>& vector)
     {
         float vectorLength = GetVectorLength<T>(vector);
-        if (vectorLength == 0.f) return sf::Vector2<T>();
+        if (vectorLength == 0.f) return vector;
         return ScaleVector<T>(vector, 1.f / vectorLength);
     }
 }

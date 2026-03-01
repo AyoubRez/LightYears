@@ -21,18 +21,24 @@ namespace ly
         virtual void Tick(float delta_time);
         void SetTexture(const std::string& texturePath);
         void Render(sf::RenderWindow& window) const;
-        
+
         void SetActorLocation(const sf::Vector2f& newLocation);
         void SetActorRotation(const sf::Angle& newRotation);
         void AddActorLocationOffset(const sf::Vector2f& offsetAmount);
         void AddActorRotationOffset(const sf::Angle& offsetAmount);
-        
+
         sf::Vector2f GetActorLocation() const;
         sf::Angle GetActorRotation() const;
         sf::Vector2f GetActorForwardDirection() const;
         sf::Vector2f GetActorRightDirection() const;
-        
+
         sf::Vector2u GetWindowSize() const;
+        sf::FloatRect GetActorGlobalBounds() const;
+
+
+        World* GetWorld() const { return m_OwningWorld; }
+
+        bool IsActorOuOfWindowBounds() const;
 
     private:
         void CenterPivot();
@@ -42,6 +48,4 @@ namespace ly
         TOptional<sf::Sprite> m_Sprite;
         TSharedPtr<sf::Texture> m_Texture;
     };
-
-    
 }

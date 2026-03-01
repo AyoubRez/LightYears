@@ -12,6 +12,7 @@ namespace ly
         void BeginPlay() override;
         void SetVelocity(const sf::Vector2f& velocity);
         sf::Vector2f GetVelocity() const { return mVelocity; }
+        virtual void Shoot();
 
     private:
         sf::Vector2f mVelocity;

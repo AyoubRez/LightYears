@@ -55,6 +55,10 @@ namespace ly
         {
             m_CleanCycleClock.restart();
             AssetManager::Get().CleanCycle();
+            if (m_CurrentWorld)
+            {
+                m_CurrentWorld->CleanCycle();
+            }
         }
     }
 

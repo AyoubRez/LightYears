@@ -3,6 +3,7 @@
 
 namespace ly
 {
+    class BulletShooter;
     class PlayerSpaceship : public Spaceship
     {
     public:
@@ -12,6 +13,7 @@ namespace ly
         void Tick(float delta_time) override;
         void SetSpeed(float speed) { mSpeed = speed; }
         float GetSpeed() { return mSpeed; }
+        void Shoot() override;
 
     private:
         void HandleInput();
@@ -20,5 +22,6 @@ namespace ly
         void ClampInputOnEdge();
         sf::Vector2f mMoveInput;
         float mSpeed;
+        TUniquePtr<BulletShooter> mShooter;
     };
 }

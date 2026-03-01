@@ -1,6 +1,7 @@
 ﻿#include "player/PlayerSpaceship.h"
 
 #include "framework/MathLibrary.h"
+#include "weapon/BulletShooter.h"
 
 
 namespace ly
@@ -8,7 +9,8 @@ namespace ly
     PlayerSpaceship::PlayerSpaceship(World* owningWorld, const std::string& texturePath)
         : Spaceship(owningWorld, texturePath),
           mMoveInput(),
-          mSpeed(500.f)
+          mSpeed(500.f),
+          mShooter(new BulletShooter(this,0.15f))
     {
     }
 
@@ -17,6 +19,14 @@ namespace ly
         Spaceship::Tick(delta_time);
         HandleInput();
         ConsumeInput(delta_time);
+    }
+
+    void PlayerSpaceship::Shoot()
+    {
+        if (mShooter)
+        {
+            mShooter->Shoot();
+        }
     }
 
     void PlayerSpaceship::HandleInput()
@@ -40,6 +50,8 @@ namespace ly
         }
         ClampInputOnEdge();
         NormalizeInput();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+            Shoot();
     }
 
     void PlayerSpaceship::ConsumeInput(float delta_time)
@@ -51,7 +63,6 @@ namespace ly
     void PlayerSpaceship::NormalizeInput()
     {
         NormalizeVector(mMoveInput);
-        LY_LOG("Move input normalized: %f , %f", mMoveInput.x, mMoveInput.y);
     }
 
     void PlayerSpaceship::ClampInputOnEdge()
@@ -66,12 +77,12 @@ namespace ly
         {
             mMoveInput.x = 0.f;
         }
-        
+
         if (actorLocation.y < 0.f && mMoveInput.y < 0.f)
         {
             mMoveInput.y = 0.f;
         }
-        
+
         if (actorLocation.y > GetWindowSize().y && mMoveInput.y > 0.f)
         {
             mMoveInput.y = 0.f;
